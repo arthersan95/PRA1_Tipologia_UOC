@@ -4,21 +4,30 @@ import pandas as pd
 import regex as re
 
 
-# Comprobamos que no tenemos fichero robots.txt para esta web:
-
-print(requests.get("http://books.toscrape.com/robots.txt",data =None))
+# Definimios una función que, dado el link a una web, verifique la existencia del
+# fichero robots.txt
+def robots_txt (link):
+    robot = requests.get(link+"/robots.txt",data =None)
+    return robot.text
+    
+# Comprobamos el fichero robots.txt de la web sobre la que realizaremos la PRA:
+print(robots_txt("http://books.toscrape.com"))
 
 # Obtenemos un 404 (Not Found). Esto puede ser debido a que esta web está específicamente diseñada
 # para practicar con Web Scraping, por lo que el contenido de este fichero para esta web puede ser
 # innecesario.
 
 
+# Definimos el dataframe que iremos completando haciendo Web Scraping:
 
-url ='http://books.toscrape.com/catalogue/page-{}.html'
 datos = pd.DataFrame(columns=['titulo','precio','cantidad_stock','categoria','rating'])
 
-for page in range(1,51):
-    # Hacemos scraping de cada página
+# Definimos una funcion que, dada una página de la web BooksToScrape, extraiga los datos
+# necesarios para construir el dataset:
+
+def get_data_page (page):
+    data = pd.DataFrame(columns=['titulo','precio','cantidad_stock','categoria','rating'])
+    url ='http://books.toscrape.com/catalogue/page-{}.html'
     url_final = url.format(page)
     res = requests.get(url_final).text
     soup = BeautifulSoup(res,'html.parser')
@@ -46,8 +55,11 @@ for page in range(1,51):
         elif rating == 'Five':
             rating = 5
         # Añadimos los datos al dataframe
-        datos = datos.append({'titulo':titulo,'precio':precio, 'cantidad_stock':cant_stock, 'categoria':cat, 'rating':rating}, ignore_index=True)     
+        data = data.append({'titulo':titulo,'precio':precio, 'cantidad_stock':cant_stock, 'categoria':cat, 'rating':rating}, ignore_index=True)
+    return data               
 
+for page in range(1,51):
+    datos = datos.append(get_data_page(page))
 
 # Breve análisis de las variables del dataset obtenido:
 
