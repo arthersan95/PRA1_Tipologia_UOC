@@ -15,7 +15,7 @@ Arturo Hernández Sánchez, Laia Cebey Ripoll.
 ## Ficheros incluídos en el repositorio Github
 
 * **PAC1.py**: Código en Python generado para obtener los datos mediante Web Scraping utilizando las librerías BeautifulSoup y Requests y el análisis de las correlaciones.
-* **PAC1_selenium.py: Código en Python generado para obtener los datos mediante Web Scraping utilizando la librería Selenium.
+* **PAC1_selenium.py**: Código en Python generado para obtener los datos mediante Web Scraping utilizando la librería Selenium.
 * **PRA1.pdf**: Respuestas a los apartados 1-10 de la práctica.
 
 ## Referencias
